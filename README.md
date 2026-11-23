@@ -114,16 +114,27 @@ Options: `--delay <seconds>` changes the pause between API calls. `GEMINI_MODEL`
 
 ## Results
 
-| Metric (17 alerts) | Gemini | Keyword mock |
+| Metric (17 alerts) | Gemini (`gemini-3.5-flash-lite`) | Keyword mock |
 |---|---|---|
-| Valid structured output | _TBD_ | 100% |
-| Severity accuracy | _TBD_ | 76% |
-| Category accuracy | _TBD_ | 100% |
-| Team (routing) accuracy | _TBD_ | 100% |
-| Escalation accuracy | _TBD_ | 82% |
-| Fully correct alerts | _TBD_ | 12/17 |
+| Valid structured output | 100% | 100% |
+| Severity accuracy | 88% | 76% |
+| Category accuracy | 100% | 100% |
+| Team (routing) accuracy | 100% | 100% |
+| Escalation accuracy | 94% | 82% |
+| Fully correct alerts | 14/17 | 12/17 |
 
-> Gemini column: fill in after running `python main.py && python evaluate.py`.
+Full traces: `output/tickets_gemini.json` / `output/eval_gemini.json` (and the `_mock` equivalents).
+
+**Gemini mismatches**
+- **ALR-004** (switch port failing, backup link up): predicted *low*, labelled *medium*. The model weighed the working backup link more heavily than the policy wording "degraded service".
+- **ALR-010** (VPN down, 40 staff): predicted *medium*, labelled *high*. The model seems to have read 40 users as "limited" rather than "significant" disruption.
+- **ALR-013** (vague "app feels slow"): severity and category correct, but the model reported confidence 0.9, so the alert was **not escalated**.
+
+**Key observations**
+- **The prompt injection failed.** ALR-012 was classified as high / infrastructure (not the injected low / application), and the summary notes "Manipulation attempt ignored."
+- **Uncalibrated confidence, seen in practice.** The two vague alerts got very different confidence: ALR-017 got 0.5 (escalated) but ALR-013 got 0.9 (not escalated), even though ALR-013 states that monitoring shows nothing wrong. This is the limitation described above. The confidence threshold caught one of the two cases.
+- **Both severity errors under-rate impact by one level, on alerts not flagged as ambiguous.** In hindsight, ALR-004 and ALR-010 sit near policy boundaries too. They were deliberately **not** relabelled after seeing the results, because changing labels to agree with the model would inflate its score. Clearer policy examples are a possible improvement.
+- **Compared with the mock**, Gemini handled the cases that need understanding rather than keyword matching: ALR-008 (UPS) was rated critical, and ALR-013's "no errors logged" was read correctly as a negation.
 
 Mock mismatches: ALR-005, ALR-006, ALR-008 (severity, see above), ALR-009 and ALR-013. The last two are contested labels.
 
