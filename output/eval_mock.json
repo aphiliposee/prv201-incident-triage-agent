@@ -1,0 +1,72 @@
+{
+  "total_alerts": 17,
+  "valid_output_rate": 1.0,
+  "accuracy": {
+    "severity": 0.765,
+    "category": 1.0,
+    "team": 1.0,
+    "escalate": 0.824
+  },
+  "fully_correct": 12,
+  "mismatches": [
+    {
+      "alert_id": "ALR-005",
+      "differences": {
+        "escalate": {
+          "expected": false,
+          "predicted": true
+        }
+      },
+      "ambiguous_label": false
+    },
+    {
+      "alert_id": "ALR-006",
+      "differences": {
+        "severity": {
+          "expected": "medium",
+          "predicted": "low"
+        },
+        "escalate": {
+          "expected": false,
+          "predicted": true
+        }
+      },
+      "ambiguous_label": false
+    },
+    {
+      "alert_id": "ALR-008",
+      "differences": {
+        "severity": {
+          "expected": "critical",
+          "predicted": "low"
+        }
+      },
+      "ambiguous_label": false
+    },
+    {
+      "alert_id": "ALR-009",
+      "differences": {
+        "severity": {
+          "expected": "medium",
+          "predicted": "high"
+        }
+      },
+      "ambiguous_label": true
+    },
+    {
+      "alert_id": "ALR-013",
+      "differences": {
+        "severity": {
+          "expected": "low",
+          "predicted": "high"
+        },
+        "escalate": {
+          "expected": true,
+          "predicted": false
+        }
+      },
+      "ambiguous_label": true
+    }
+  ],
+  "classifier": "keyword-mock"
+}

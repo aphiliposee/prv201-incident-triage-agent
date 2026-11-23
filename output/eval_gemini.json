@@ -1,0 +1,44 @@
+{
+  "total_alerts": 17,
+  "valid_output_rate": 1.0,
+  "accuracy": {
+    "severity": 0.882,
+    "category": 1.0,
+    "team": 1.0,
+    "escalate": 0.941
+  },
+  "fully_correct": 14,
+  "mismatches": [
+    {
+      "alert_id": "ALR-004",
+      "differences": {
+        "severity": {
+          "expected": "medium",
+          "predicted": "low"
+        }
+      },
+      "ambiguous_label": false
+    },
+    {
+      "alert_id": "ALR-010",
+      "differences": {
+        "severity": {
+          "expected": "high",
+          "predicted": "medium"
+        }
+      },
+      "ambiguous_label": false
+    },
+    {
+      "alert_id": "ALR-013",
+      "differences": {
+        "escalate": {
+          "expected": true,
+          "predicted": false
+        }
+      },
+      "ambiguous_label": true
+    }
+  ],
+  "classifier": "gemini-3.5-flash-lite"
+}
